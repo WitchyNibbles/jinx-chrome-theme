@@ -19,7 +19,7 @@ Dos extensiones que se instalan juntas, por WitchyNibbles:
 - `brush.js` — brochazo reutilizable, estilo **"chisel con halo"** (elegido sobre una lámina de muestras): brocha plana de grosor constante con extremos cortados en ángulo, capa de sombra (peso), vetas de cerdas suaves, halo de aerosol (`#brush-halo`) y niebla; revelado a lo largo del trazo con un `clipPath`.
 - `splat.js` — losetas. Hover: **X perfecta de esquina a esquina** detrás del favicon (capa `z-index:-1`): cada brazo mide la diagonal de la loseta, azul a −45° pintado desde abajo-izquierda y rosa a +45° desde abajo-derecha; solo sobresalen los cortes en ángulo. Se queda mientras el cursor esté encima y se despinta (`reverse()`) al salir. Clic: los cuatro cuadrantes del icono (clones con `clip-path`) colapsan al centro girando (280 ms) y, en ese instante, **sello de grafiti** (elegido sobre una lámina de 8 explosiones): flash blanco, una X grande de brochazos chisel rosa/morado (150×18 px) que se estampa con rebote (`back.out`) y overspray de 40 puntos; la caja desaparece, la pintura se queda, y se navega a los 840 ms.
 - `search-paint.js` — dos brochazos en **X alargada** detrás del buscador (±6°, sobresalen 90 px por lado): el morado se pinta de izquierda a derecha y el rosa, 0.15 s después, de derecha a izquierda. Al perder el foco la timeline va en `reverse()` y se despintan. Se regeneran en cada foco.
-- Motor: **GSAP 3.15** + DrawSVGPlugin, empaquetados en `ntp/vendor/` (licencia estándar "no charge", gratis para todo uso desde 2025; sin `eval`, compatible con la CSP de MV3).
+- Motor: **GSAP 3.15** + DrawSVGPlugin, empaquetados en `ntp/vendor/` (licencia estándar "no charge" de GSAP: gratis, pero con las restricciones de su licencia, p. ej. no se puede usar en herramientas que construyan animaciones visuales sin código y compitan con Webflow; texto en `ntp/vendor/LICENSE-gsap.txt`; sin `eval`, compatible con la CSP de MV3).
 
 Referencia visual: las pintadas de Jinx en Arcane — brochazos rectos y gordos en rosa-magenta, cian y morado, textura de cerdas, goteos colgando, salpicaduras con tentáculos y niebla fina.
 
@@ -109,7 +109,7 @@ python3 -m venv .venv && .venv/bin/pip install pillow
 node --test ntp/tests/*.test.mjs
 ```
 
-Si cambias de wallpaper, ajusta `FACE_CENTER` / `FACE_X_TARGET` en `build.py` para que el punto de interés quede bien encuadrado en el recorte 1920×1080. Los promo tiles de la Store salen de la misma imagen: `python store/make_store_images.py [--source RUTA]`.
+Si cambias de wallpaper, ajusta `FACE_CENTER` / `FACE_X_TARGET` en `build.py` para que el punto de interés quede bien encuadrado en el recorte 1920×1080. `FACE_CENTER` también fija el encuadre de los promo tiles de la Store, así que ese único valor controla ambos. Los promo tiles salen de la misma imagen: `python store/make_store_images.py [--source RUTA]`.
 
 ## ¿Por qué dos extensiones y no una?
 

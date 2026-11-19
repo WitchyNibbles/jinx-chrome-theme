@@ -18,6 +18,11 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:  # al ejecutar store/make_store_images.py solo store/ está en sys.path
+    sys.path.insert(0, str(ROOT))
+
+import build  # noqa: E402  (necesita ROOT en sys.path)
+
 RAW = ROOT / "store" / "raw"
 OUT = ROOT / "store" / "screenshots"
 SOURCE = ROOT / "assets" / "source.png"
@@ -26,7 +31,6 @@ FONT = ROOT / "ntp" / "fonts" / "Bangers-Regular.ttf"
 SCREENSHOT = (1280, 800)
 ALLOWED = {(1280, 800), (640, 400)}
 PROMOS = [("promo-small-440x280.png", (440, 280), 56), ("promo-marquee-1400x560.png", (1400, 560), 120)]
-FACE_X = 0.705  # misma referencia que build.py: la cara de Jinx, en fracción del ancho
 
 
 def cover(im: Image.Image, size: tuple[int, int], focus_x: float = 0.5) -> Image.Image:
@@ -65,7 +69,7 @@ def convert_screenshots() -> list[Path]:
 
 def promo_tile(source: Path, out_dir: Path, name: str, size: tuple[int, int], font_size: int) -> Path:
     with Image.open(source) as wallpaper:
-        im = cover(wallpaper.convert("RGB"), size, focus_x=FACE_X)
+        im = cover(wallpaper.convert("RGB"), size, focus_x=build.FACE_CENTER[0])  # la misma cara que centra build.py
     draw = ImageDraw.Draw(im)
     font = ImageFont.truetype(str(FONT), font_size)
     text = "JINX"

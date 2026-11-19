@@ -2,11 +2,14 @@
 import contextlib
 import io
 import json
+import shutil
+import subprocess
 import tempfile
 import unittest
 import zipfile
 from fnmatch import fnmatch
 from pathlib import Path
+from unittest import mock
 
 from PIL import Image
 
@@ -22,7 +25,12 @@ def ignore_patterns() -> list[str]:
 
 
 def is_ignored(rel: str) -> bool:
-    """Subconjunto de las reglas de .gitignore que usa este repo (sin git, sin negaciones)."""
+    """Subconjunto de las reglas de .gitignore que usa este repo (sin git, sin negaciones).
+
+    Es más laxo que git: el * de fnmatch cruza los "/", no entiende "**", ni "!",
+    ni la "/" inicial. Sirve para las reglas simples de este .gitignore; para una
+    comprobación exacta hay que preguntarle a git (ver test_only_frame_and_attribution_images_ship).
+    """
     parts = rel.split("/")
     for pattern in ignore_patterns():
         only_dir = pattern.endswith("/")
@@ -58,6 +66,29 @@ class GitignoreTest(unittest.TestCase):
         for rel in ("src/images/frame.png", "src/images/attribution.png", "build.py", "assets/fonts/OFL.txt",
                     "ntp/fonts/Bangers-Regular.ttf", "ntp/vendor/gsap.min.js", "src/manifest.json"):
             self.assertFalse(is_ignored(rel), rel)
+
+
+class ShippedImagesTest(unittest.TestCase):
+    def test_only_frame_and_attribution_images_ship(self):
+        """Ninguna imagen más (p. ej. el wallpaper o sus derivados) puede colarse en el repo.
+
+        Usa `git ls-files -co --exclude-standard` (archivos versionados o nuevos y no
+        ignorados) en vez de is_ignored: git aplica el .gitignore exacto. Sin git o
+        fuera de un repo (p. ej. un tarball) el test se salta.
+        """
+        if shutil.which("git") is None:
+            self.skipTest("git no está instalado: no se puede listar lo que se publicaría")
+        probe = subprocess.run(["git", "ls-files", "-co", "--exclude-standard", "-z"], cwd=ROOT, capture_output=True)
+        if probe.returncode != 0:
+            self.skipTest("no es un repositorio git: no se puede listar lo que se publicaría")
+        files = [f for f in probe.stdout.decode().split("\0") if f]
+        images = {
+            f for f in files
+            if f.lower().endswith((".png", ".jpg", ".jpeg", ".webp"))
+            and not f.startswith((".venv/", ".git/"))
+            and (ROOT / f).is_file()
+        }
+        self.assertEqual(images, {"src/images/frame.png", "src/images/attribution.png"})
 
 
 class BuildCliTest(unittest.TestCase):
@@ -99,9 +130,27 @@ class BuildCliTest(unittest.TestCase):
             self.assertTrue((self.tmp / "out" / rel).is_file(), rel)
 
     def test_store_images_missing_source_explains_and_writes_nothing(self):
-        code, err = self.run_main(make_store_images, ["--source", str(self.tmp / "no-existe.png")])
+        sandbox = self.tmp / "sandbox"
+        sandbox.mkdir()
+        store = sandbox / "store"
+        with mock.patch.multiple(make_store_images, ROOT=sandbox, RAW=store / "raw", OUT=store / "screenshots"):
+            code, err = self.run_main(make_store_images, ["--source", str(self.tmp / "no-existe.png")])
         self.assertEqual(code, 1)
         self.assertIn("--source", err)
+        self.assertEqual(list(sandbox.rglob("*")), [])
+
+    def test_store_promo_focus_follows_build_face_center(self):
+        wallpaper = support.make_wallpaper(self.tmp / "w.png")
+        seen = []
+        real_cover = make_store_images.cover
+
+        def spy(im, size, focus_x=0.5):
+            seen.append(focus_x)
+            return real_cover(im, size, focus_x)
+
+        with mock.patch.object(build, "FACE_CENTER", (0.4, 0.33)), mock.patch.object(make_store_images, "cover", spy):
+            make_store_images.promo_tile(wallpaper, self.tmp, "promo-small-440x280.png", (440, 280), 56)
+        self.assertEqual(seen, [0.4])
 
     def test_store_promo_tile_from_given_source(self):
         wallpaper = support.make_wallpaper(self.tmp / "w.png")
