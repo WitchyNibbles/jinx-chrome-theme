@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jinx — bienvenida</title>
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/newtab.css">
+  <link rel="stylesheet" href="css/welcome.css">
+</head>
+<body>
+  <main class="welcome">
+    <h1 class="welcome__title">Jinx New Tab</h1>
+    <p class="welcome__lead">La nueva pestaña ya está lista. Falta un paso para completar el look:</p>
+
+    <section class="welcome__step">
+      <h2>Instala el tema Jinx</h2>
+      <p>Pinta el marco, las pestañas y la barra de direcciones con el degradado azul → rosa. Chrome no permite meter un tema y una nueva pestaña en el mismo paquete, así que va aparte.</p>
+      <a class="welcome__btn" id="install-theme" href="#" target="_blank" rel="noopener">Instalar tema Jinx</a>
+      <p class="welcome__hint" id="theme-hint" hidden></p>
+    </section>
+
+    <section class="welcome__step welcome__step--muted">
+      <h2>Opcional</h2>
+      <p>Chrome añade una barra al pie de la nueva pestaña con el nombre de la extensión. Para quitarla: clic derecho sobre ella → <em>Ocultar pie de página</em>.</p>
+    </section>
+  </main>
+  <script type="module" src="js/welcome.js"></script>
+</body>
+</html>

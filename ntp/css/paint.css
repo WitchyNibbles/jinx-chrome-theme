@@ -1,0 +1,54 @@
+/* Capas de pintura (SVG generado en js/paint/*). */
+
+.tile__paint-back,
+.tile__splats {
+  position: absolute;
+  left: -74px;
+  top: -74px;
+  width: 200px;
+  height: 200px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.tile { isolation: isolate; } /* contexto propio para ordenar las capas de pintura */
+.tile__paint-back { z-index: -1; } /* detrás del icono: los brochazos lo atraviesan */
+.tile__splats { z-index: 1; }      /* delante: la explosión mancha el icono */
+
+/* La loseta activa flota sobre sus vecinas para que su pintura no quede tapada. */
+.tile:hover,
+.tile:focus-visible,
+.tile--burst {
+  z-index: 2;
+}
+
+/* Trozos del icono durante el colapso (clones con clip-path por cuadrante). */
+.tile__icon-piece {
+  position: absolute;
+  margin: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Al reventar desaparece la caja; la pintura (hija de la loseta) se queda en
+   pantalla hasta que navegamos. */
+.tile--burst {
+  background: transparent;
+  box-shadow: none;
+  transition: background 220ms ease-out, box-shadow 220ms ease-out;
+}
+
+.tile--burst .tile__edit { display: none; }
+
+
+
+.search { position: relative; isolation: isolate; } /* contexto propio: el z-index:-1 del SVG queda dentro del form */
+
+.search__paint {
+  position: absolute;
+  overflow: visible;
+  z-index: -1;           /* detrás de la caja: los brochazos la rodean, no la tapan */
+  pointer-events: none;
+}
+
+

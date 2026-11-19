@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Jinx New Tab",
+  "version": "1.0.0",
+  "description": "Nueva pestaña inspirada en Jinx (Arcane): fondo, reloj y accesos directos con explosiones de pintura. Complemento del tema Jinx.",
+  "icons": {
+    "128": "images/icon128.png"
+  },
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "background": {
+    "service_worker": "sw.js"
+  },
+  "permissions": [
+    "topSites",
+    "favicon",
+    "search",
+    "storage"
+  ]
+}

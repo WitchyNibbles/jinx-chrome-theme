@@ -1,0 +1,22 @@
+.venv/
+__pycache__/
+*.pyc
+dist/
+*.zip
+*.crx
+*.pem
+src/Cached Theme.pak
+store/raw/
+
+# Derivado del wallpaper de cada uno (ver README, "Pon tu propio wallpaper"):
+# el repo no lo incluye. Se regenera con build.py y store/make_store_images.py.
+assets/*.png
+assets/*.jpg
+assets/*.jpeg
+assets/*.webp
+src/images/ntp_background.jpg
+src/images/icon128.png
+ntp/images/bg.jpg
+ntp/images/icon128.png
+store/promo-*.png
+store/screenshots/

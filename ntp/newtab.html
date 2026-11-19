@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nueva pestaña</title>
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/newtab.css">
+  <link rel="stylesheet" href="css/paint.css">
+</head>
+<body>
+  <main class="page">
+    <form class="search" id="search" role="search" autocomplete="off">
+      <input class="search__input" id="search-input" type="search" name="q"
+             placeholder="Buscar…" aria-label="Buscar" spellcheck="false">
+    </form>
+
+    <section class="shortcuts" id="shortcuts" aria-label="Accesos directos"></section>
+
+    <aside class="clock" aria-live="off">
+      <div class="clock__time" id="clock-time">--:--</div>
+      <div class="clock__date" id="clock-date"></div>
+    </aside>
+  </main>
+
+  <dialog class="editor" id="shortcut-editor">
+    <form method="dialog" class="editor__form">
+      <h2>Acceso directo</h2>
+      <label class="editor__field">
+        <span>Dirección</span>
+        <input id="editor-url" type="text" name="url" placeholder="ejemplo.com" autocomplete="off" spellcheck="false" required>
+      </label>
+      <label class="editor__field">
+        <span>Nombre <small>(opcional, se muestra al pasar el ratón)</small></span>
+        <input id="editor-title" type="text" name="title" autocomplete="off" maxlength="40">
+      </label>
+      <p class="editor__error" role="alert"></p>
+      <div class="editor__actions">
+        <button type="button" class="editor__delete editor__btn editor__btn--danger">Eliminar</button>
+        <span class="editor__spacer"></span>
+        <button type="button" class="editor__btn" data-close>Cancelar</button>
+        <button type="submit" class="editor__btn editor__btn--primary">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <template id="tile-template">
+    <div class="tile">
+      <svg class="tile__paint-back" viewBox="-100 -100 200 200" aria-hidden="true"></svg>
+      <svg class="tile__splats" viewBox="-100 -100 200 200" aria-hidden="true"></svg>
+      <a class="tile__link" draggable="false">
+        <span class="tile__icon"><img alt="" width="28" height="28"></span>
+      </a>
+      <button type="button" class="tile__edit" title="Editar" aria-label="Editar acceso directo">✎</button>
+    </div>
+  </template>
+
+  <script src="vendor/gsap.min.js"></script>
+  <script src="vendor/DrawSVGPlugin.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

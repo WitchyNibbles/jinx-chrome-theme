@@ -1,0 +1,131 @@
+{
+  "manifest_version": 3,
+  "name": "Jinx",
+  "version": "1.0.0",
+  "description": "Tema Jinx (Arcane): marco degradado azul → rosa, toolbar azul pastel, acentos rosa, fondo Full HD.",
+  "icons": {
+    "128": "images/icon128.png"
+  },
+  "theme": {
+    "images": {
+      "theme_frame": "images/frame.png",
+      "theme_frame_inactive": "images/frame.png",
+      "theme_ntp_attribution": "images/attribution.png",
+      "theme_ntp_background": "images/ntp_background.jpg"
+    },
+    "colors": {
+      "frame": [
+        52,
+        112,
+        204
+      ],
+      "frame_inactive": [
+        52,
+        112,
+        204
+      ],
+      "toolbar": [
+        122,
+        172,
+        236
+      ],
+      "toolbar_text": [
+        14,
+        28,
+        60
+      ],
+      "toolbar_button_icon": [
+        180,
+        36,
+        95
+      ],
+      "omnibox_background": [
+        206,
+        226,
+        250
+      ],
+      "omnibox_text": [
+        14,
+        28,
+        60
+      ],
+      "tab_text": [
+        180,
+        36,
+        95
+      ],
+      "tab_background_text": [
+        230,
+        240,
+        255
+      ],
+      "tab_background_text_inactive": [
+        230,
+        240,
+        255
+      ],
+      "background_tab": [
+        52,
+        112,
+        204
+      ],
+      "background_tab_inactive": [
+        52,
+        112,
+        204
+      ],
+      "bookmark_text": [
+        14,
+        28,
+        60
+      ],
+      "ntp_background": [
+        12,
+        13,
+        12
+      ],
+      "ntp_text": [
+        228,
+        236,
+        250
+      ],
+      "ntp_link": [
+        255,
+        140,
+        196
+      ],
+      "ntp_header": [
+        255,
+        92,
+        168
+      ]
+    },
+    "tints": {
+      "buttons": [
+        -1,
+        -1,
+        -1
+      ],
+      "frame": [
+        -1,
+        -1,
+        -1
+      ],
+      "frame_inactive": [
+        -1,
+        -1,
+        -1
+      ],
+      "background_tab": [
+        -1,
+        -1,
+        -1
+      ]
+    },
+    "properties": {
+      "ntp_background_alignment": "center",
+      "ntp_background_repeat": "no-repeat",
+      "ntp_logo_alternate": 1
+    }
+  }
+}
