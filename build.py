@@ -35,6 +35,7 @@ WALLPAPER_OUTPUTS = (
     "ntp/images/icon128.png",
 )
 ZIP_EXCLUDE = {"Cached Theme.pak"}  # lo genera Chrome al cargar el tema descomprimido
+ZIP_EXCLUDE_DIRS = {"tests"}  # las pruebas (ntp/tests/*.test.mjs) no van a la Store
 
 NTP_SIZE = (1920, 1080)  # exacto para el monitor principal; Chrome no escala
 NTP_QUALITY = 90
@@ -177,8 +178,9 @@ def build_zip(folder: Path, stem: str, dist: Path = DIST) -> Path:
     out = dist / f"{stem}-{manifest['version']}.zip"
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
         for path in sorted(folder.rglob("*")):
-            if path.is_file() and path.name not in ZIP_EXCLUDE:
-                zf.write(path, path.relative_to(folder))
+            rel = path.relative_to(folder)
+            if path.is_file() and path.name not in ZIP_EXCLUDE and not ZIP_EXCLUDE_DIRS & set(rel.parts[:-1]):
+                zf.write(path, rel)
     return out
 
 
@@ -202,7 +204,11 @@ def main(argv: list[str]) -> int:
         return 1
     if args.zip:
         dist = args.root / "dist"
-        outputs += [build_zip(args.root / "src", "jinx-theme", dist), build_zip(args.root / "ntp", "jinx-newtab", dist)]
+        try:
+            outputs += [build_zip(args.root / "src", "jinx-theme", dist), build_zip(args.root / "ntp", "jinx-newtab", dist)]
+        except FileNotFoundError as exc:  # --root sin manifest.json en src/ o ntp/
+            print(f"error: no se puede empaquetar, falta {exc.filename} (--zip necesita src/manifest.json y ntp/manifest.json en --root)", file=sys.stderr)
+            return 1
     for path in outputs:
         print(f"ok  {path.relative_to(args.root)}  ({path.stat().st_size // 1024} KB)")
     return 0

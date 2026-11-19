@@ -58,7 +58,8 @@ def convert_screenshots() -> list[Path]:
     for src in sorted(RAW.iterdir()) if RAW.exists() else []:
         if src.suffix.lower() not in {".png", ".jpg", ".jpeg"}:
             continue
-        im = flatten(Image.open(src).convert("RGBA"))
+        with Image.open(src) as raw:
+            im = flatten(raw.convert("RGBA"))
         if im.size not in ALLOWED:
             im = cover(im, SCREENSHOT)
         out = OUT / f"{src.stem}.png"
@@ -92,6 +93,12 @@ def main(argv: list[str]) -> int:
             "(ver README, \"Pon tu propio wallpaper\")",
             file=sys.stderr,
         )
+        return 1
+    try:
+        with Image.open(args.source) as wallpaper:
+            wallpaper.load()  # falla aquí, antes de escribir nada, si no es una imagen válida
+    except (OSError, ValueError) as exc:
+        print(f"error: {args.source} no es una imagen que se pueda leer ({exc})", file=sys.stderr)
         return 1
     outs = convert_screenshots()
     if not outs:

@@ -7,8 +7,8 @@ from pathlib import Path
 
 from PIL import Image
 
+import support  # primero: añade la raíz y store/ a sys.path para los imports siguientes
 import build
-import support
 from support import ROOT
 
 SRC = ROOT / "src"

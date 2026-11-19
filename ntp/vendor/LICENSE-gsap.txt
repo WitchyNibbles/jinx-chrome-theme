@@ -2,7 +2,7 @@ GSAP 3.15.0 (gsap.min.js, DrawSVGPlugin.min.js)
 Copyright Webflow, Inc.
 Distributed under the GSAP Standard "no charge" license:
 https://gsap.com/standard-license/
-Free for all uses, including commercial, since April 2025.
+Gratuito, también para uso comercial, con las restricciones de la licencia que sigue (desde abril de 2025).
 
 Standard "No Charge" GSAP License
 

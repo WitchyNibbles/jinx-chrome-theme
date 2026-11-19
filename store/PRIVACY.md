@@ -1,6 +1,6 @@
 # Política de privacidad — Jinx New Tab / Jinx — Arcane fan theme
 
-Última actualización: 2026-09-16
+Última actualización: 2026-11-19
 
 **Jinx New Tab** y **Jinx — Arcane fan theme** no recopilan, almacenan ni transmiten datos personales a ningún servidor.
 

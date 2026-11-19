@@ -127,7 +127,7 @@ Todo el material está en `store/`: `LISTING.md` (textos de las fichas y justifi
 
 ### Derechos de la ilustración
 
-Usa solo imágenes sobre las que tengas derechos (propias, con licencia o con permiso de su autor) tanto en tu instalación local como, sobre todo, antes de publicar en la Store: la Store retira fichas por reclamación de derechos y las capturas y promo tiles también muestran el wallpaper. Una opción es un render oficial de Arcane usado bajo la política de fan content de Riot ("Legal Jibber Jabber"), con atribución y sin ánimo de lucro. El nombre incluye "fan" y la descripción lleva el aviso de marcas por ese motivo.
+Usa solo imágenes sobre las que tengas derechos (propias, con licencia o con permiso de su autor) tanto en tu instalación local como, sobre todo, antes de publicar en la Store: la Store retira fichas por reclamación de derechos y las capturas y promo tiles también muestran el wallpaper. Una opción es un render oficial de Arcane usado bajo la política de fan content de Riot ("Legal Jibber Jabber"), con atribución y sin ánimo de lucro. Los textos de la ficha (store/LISTING.md) llevan "fan" en el nombre y el aviso de marcas en la descripción; los manifests se llaman "Jinx" y "Jinx New Tab", y la Store muestra el nombre del manifest, así que si quieres que "fan" aparezca en el nombre, cámbialo en los manifests antes de publicar.
 
 ## Aviso
 

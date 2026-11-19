@@ -43,7 +43,9 @@ class NtpPageTest(unittest.TestCase):
             self.assertTrue(refs, page)
             for ref in refs:
                 self.assertTrue(exists_or_generated(NTP / ref), f"{page}: {ref}")
-        for css in (NTP / "css").glob("*.css"):
+        stylesheets = list((NTP / "css").glob("*.css"))
+        self.assertTrue(stylesheets, "no hay hojas de estilo en ntp/css")
+        for css in stylesheets:
             for url in re.findall(r'url\("([^"]+)"\)', css.read_text()):
                 self.assertTrue(exists_or_generated(css.parent / url), f"{css.name}: {url}")
 
@@ -61,12 +63,16 @@ class NtpPageTest(unittest.TestCase):
 
     def test_vendored_gsap_is_csp_safe_and_licensed(self):
         # La CSP de MV3 prohíbe eval/new Function; GSAP no los usa.
-        for js in (NTP / "vendor").glob("*.js"):
+        scripts = list((NTP / "vendor").glob("*.js"))
+        self.assertTrue(scripts, "no hay scripts en ntp/vendor")
+        for js in scripts:
             self.assertNotRegex(js.read_text(), r"\beval\(|new Function\(", js.name)
         self.assertTrue((NTP / "vendor/LICENSE-gsap.txt").is_file())
 
     def test_fonts_ship_their_license(self):
-        for font in (NTP / "fonts").glob("*.ttf"):
+        fonts = list((NTP / "fonts").glob("*.ttf"))
+        self.assertTrue(fonts, "no hay fuentes en ntp/fonts")
+        for font in fonts:
             stem = font.stem.split("-")[0]
             self.assertTrue((NTP / "fonts" / f"OFL-{stem}.txt").is_file(), font.name)
 

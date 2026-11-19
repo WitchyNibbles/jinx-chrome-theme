@@ -13,9 +13,9 @@ from unittest import mock
 
 from PIL import Image
 
+import support  # primero: añade la raíz y store/ a sys.path para los imports siguientes
 import build
 import make_store_images
-import support
 from support import ROOT
 
 
@@ -84,7 +84,7 @@ class ShippedImagesTest(unittest.TestCase):
         files = [f for f in probe.stdout.decode().split("\0") if f]
         images = {
             f for f in files
-            if f.lower().endswith((".png", ".jpg", ".jpeg", ".webp"))
+            if f.lower().endswith((".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif", ".bmp", ".ico", ".tif", ".tiff"))
             and not f.startswith((".venv/", ".git/"))
             and (ROOT / f).is_file()
         }
@@ -139,6 +139,27 @@ class BuildCliTest(unittest.TestCase):
         self.assertIn("--source", err)
         self.assertEqual(list(sandbox.rglob("*")), [])
 
+    def test_store_images_not_an_image_source_is_a_clear_error_and_writes_nothing(self):
+        sandbox = self.tmp / "sandbox"
+        store = sandbox / "store"
+        (store / "raw").mkdir(parents=True)
+        support.make_wallpaper(store / "raw" / "captura.png", (1280, 800))
+        bogus = self.tmp / "texto.png"
+        bogus.write_text("no soy una imagen")
+        before = sorted(sandbox.rglob("*"))
+        with mock.patch.multiple(make_store_images, ROOT=sandbox, RAW=store / "raw", OUT=store / "screenshots"):
+            code, err = self.run_main(make_store_images, ["--source", str(bogus)])
+        self.assertEqual(code, 1)
+        self.assertIn("error", err)
+        self.assertIn("texto.png", err)
+        self.assertEqual(sorted(sandbox.rglob("*")), before)
+
+    def test_zip_without_manifest_is_a_clear_error(self):
+        wallpaper = support.make_wallpaper(self.tmp / "w.png")
+        code, err = self.run_main(build, ["--source", str(wallpaper), "--root", str(self.tmp / "out"), "--zip"])
+        self.assertEqual(code, 1)
+        self.assertIn("manifest.json", err)
+
     def test_store_promo_focus_follows_build_face_center(self):
         wallpaper = support.make_wallpaper(self.tmp / "w.png")
         seen = []
@@ -171,6 +192,18 @@ class BuildCliTest(unittest.TestCase):
             names = set(zf.namelist())
         self.assertIn("images/ntp_background.jpg", names)
         self.assertNotIn("Cached Theme.pak", names)
+
+    def test_newtab_zip_leaves_out_tests_folder(self):
+        ntp = self.tmp / "ntp"
+        (ntp / "tests").mkdir(parents=True)
+        (ntp / "js").mkdir()
+        (ntp / "manifest.json").write_text(json.dumps({"version": "1.2.3"}))
+        (ntp / "tests" / "clock.test.mjs").write_text("// prueba")
+        (ntp / "js" / "app.js").write_text("// código")
+        with zipfile.ZipFile(build.build_zip(ntp, "jinx-newtab", self.tmp / "dist")) as zf:
+            names = zf.namelist()
+        self.assertIn("js/app.js", names)
+        self.assertEqual([n for n in names if n.split("/")[0] == "tests"], [])
 
 
 if __name__ == "__main__":
