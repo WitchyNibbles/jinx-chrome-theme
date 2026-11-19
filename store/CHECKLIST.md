@@ -4,7 +4,7 @@
 - [ ] `python build.py --zip` (o `--source RUTA`, ver README "Pon tu propio wallpaper") → `dist/jinx-theme-1.0.0.zip` y `dist/jinx-newtab-1.0.0.zip`
 - [ ] Tests en verde (`python -m unittest discover -s tests` y `node --test ntp/tests/*.test.mjs`)
 - [ ] Capturas reales 1280×800 (ver abajo) en `store/screenshots/`
-- [x] Política de privacidad publicada: https://gist.github.com/WitchyNibbles/9ebdc709cb425cfda03046befa47e08f (si cambias store/PRIVACY.md, actualiza el gist: `gh gist edit 9ebdc709cb425cfda03046befa47e08f store/PRIVACY.md`)
+- [x] Política de privacidad publicada: https://gist.github.com/WitchyNibbles/de929a5bb50e058f8b9fe7de40599bd2 (si cambias store/PRIVACY.md, actualiza el gist: `gh gist edit de929a5bb50e058f8b9fe7de40599bd2 --filename PRIVACY.md store/PRIVACY.md`)
 - [ ] Derechos de TU wallpaper resueltos: la imagen con la que generas fondo, icono, capturas y promo tiles (`assets/source.png` o la que pases con `--source`) debe ser tuya, tener licencia o permiso de su autor (ver README, "Derechos de la ilustración")
 
 ## Capturas (mínimo 1, máximo 5 por ficha; EXACTAMENTE 1280×800 o 640×400, PNG 24 bits sin alfa)
